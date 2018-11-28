@@ -212,7 +212,7 @@ body {
     .res .res-right .res-content {
       display: grid; 
       grid-template-columns: 11mm 1fr;
-      padding-bottom: 6mm; }
+      padding-bottom: 5mm; }
 
     .res .res-right .res-content .res-content-icon {
       grid-column-start: 1;
