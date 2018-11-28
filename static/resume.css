@@ -160,7 +160,7 @@ body {
 	  flex: 1 1 auto;
 	  padding-left: 2mm; }
 
-    .res .res-left .res-interests {
+    .res .res-left .res-interests, .res .res-left .res-awards {
       border-top: 1px solid;
       padding-top: 5mm;
       padding-bottom: 5mm; }
@@ -229,7 +229,7 @@ body {
       background: white;
       width: 4mm;
       height: 4mm;
-      margin-top: 4mm;
+      margin-top: 3mm;
       margin-left: -2.5mm;
       content: '';
       border: 1px solid black;
@@ -238,7 +238,32 @@ body {
     .res .res-right .res-content .res-content-item {
       grid-column-start: 2;
       grid-column-end: 3;
-     
-      margin-top: 4mm;
+    
+      font-size: 3.5mm;
+      margin-top: 3mm;
       margin-left: 4mm; }
+
+      .res .res-right .res-content .res-content-item .res-content-item-header {
+        display: flex;
+	align-items: center;
+	flex-flow: row nowrap; }
+
+	.res .res-right .res-content .res-content-item .res-content-item-header-position {
+	  font-size: 4mm;
+	  padding-right: 1mm; 
+	  text-transform: uppercase; }
+
+	  .res .res-right .res-content .res-content-item .res-content-item-header-position::after {
+	    content: ' //'; }
+
+	.res .res-right .res-content .res-content-item .res-content-item-header-location {
+	  font-size: 4mm;
+	  text-transform: uppercase; }
+
+	.res .res-right .res-content .res-content-item .res-content-item-header-date {
+	  margin-left: auto; }
+
+      .res .res-right .res-content .res-content-item ul {
+        padding: 0 0 0 4mm;
+	margin: 0; }
 
