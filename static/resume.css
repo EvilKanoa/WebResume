@@ -264,6 +264,7 @@ body {
     
       margin-top: 1.5mm;
       margin-left: 2mm;
+      margin: 1.5mm 0 1.5mm 2mm;
       text-align: justify; 
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
@@ -288,8 +289,20 @@ body {
 	  font-size: 3.5mm;
 	  text-transform: uppercase; }
 
+	.res .res-right .res-content .res-content-item .res-content-item-header-hrule {
+          content: '';
+	  flex: 1 1 auto;
+	  margin: 0 4mm;
+	  border-bottom: 1px solid var(--color-primary); }
+
 	.res .res-right .res-content .res-content-item .res-content-item-header-date {
 	  margin-left: auto; }
+
+	.res .res-right .res-content .res-content-item .res-content-item-header-date:before {
+	  content: '[ '; }
+
+	.res .res-right .res-content .res-content-item .res-content-item-header-date:after {
+	  content: ' ]'; }
 
       .res .res-right .res-content .res-content-item ul {
         padding: 0 0 0 4.25mm;
