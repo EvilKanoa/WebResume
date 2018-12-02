@@ -3,15 +3,15 @@ import set from 'lodash.set';
 import {createSelector} from 'reselect';
 import {renderToStaticMarkup} from 'react-dom/server'
 
-import storage from 'core/storage';
 import Resume from 'components/resume/Resume';
 
 const defaultResume = `{"data":{"name":"The Doctor","title":"Time Lord","contact":[{"icon":"fas fa-at","link":"mailto:doctor@tardis.time","label":"doctor@tardis.time"},{"icon":"fas fa-phone","link":"tel:+1234567890","label":"(123) 456-7890"}],"details":[{"type":"summary","label":"Profile","summary":"Looking to run from all sorts of trouble."},{"type":"skills","skillsets":[{"label":"Languages","skills":"English, French, Gallifreyan"}]},{"type":"details","label":"Interests","items":[{"title":"Traveling","description":"All over the universe"}]}],"events":[{"label":"Experience","icon":"fas fa-briefcase","items":[{"title":"Space Pilot","subtitle":"Milky way","date":"May 2048 BC .. Dec 6000 AC","description":"Went for a wild ride.","details":["Lots of different places"]}]}]}}`;
 
 const initialState = {
-    resume: storage.get('resume') || JSON.parse(defaultResume),
+    resume: JSON.parse(defaultResume),
     render: '',
-    printMode: false
+    printMode: false,
+    modal: undefined
 };
 
 // selectors
@@ -22,6 +22,7 @@ export const getResumeJSON = createSelector(
 );
 export const getRender = (state) => state.render;
 export const getPrintMode = (state) => state.printMode;
+export const getModalElement = (state) => state.modal;
 
 // action-creators
 export const setResume = (data) => ({
@@ -57,6 +58,13 @@ export const blipPrintMode = (delayMs = 100, cb) => (dispatch) => {
         dispatch(setPrintMode(false));
     }, delayMs);
 };
+export const showModal = (modalElement) => ({
+    type: 'SHOW_MODAL',
+    data: modalElement
+});
+export const hideModal = () => ({
+    type: 'HIDE_MODAL'
+});
 
 // reducer
 export default (state = initialState, { type, ...action }) => {
@@ -82,6 +90,16 @@ export default (state = initialState, { type, ...action }) => {
         case 'SET_PRINT_MODE': return {
             ...state,
             printMode: action.data
+        };
+
+        case 'SHOW_MODAL': return {
+            ...state,
+            modal: action.data
+        };
+
+        case 'HIDE_MODAL': return {
+            ...state,
+            modal: undefined
         };
 
         default: return {

@@ -1,0 +1,13 @@
+.save-modal {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .filename-input {
+    margin-top: 1rem;
+    flex: 0 1 auto;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: inherit;
+    font-family: inherit;
+  }
+}

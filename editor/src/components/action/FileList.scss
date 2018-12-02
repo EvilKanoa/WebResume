@@ -1,0 +1,48 @@
+.file-list {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .file-list-item-container {
+    flex: 0 1 2rem;
+
+    border-bottom: 1px solid black;
+    line-height: 2rem;
+    cursor: pointer;
+    pointer-events: auto;
+    padding: 0.25em 0;
+
+    &:last-child {
+      border: 0;
+    }
+
+    &.selected .file-list-item {
+      background: rgba(45, 50, 54, 0.5);
+    }
+
+    .file-list-item {
+      display: flex;
+      border-radius: 0.25em;
+      padding: 0 1rem;
+      user-select: none;
+
+      &:hover {
+        box-shadow: 0 0 20px -4px black;
+      }
+
+      .file-list-item-name {
+        margin-right: 2rem;
+      }
+
+      .file-list-item-date {
+        margin-left: auto;
+        margin-right: 1rem;
+      }
+
+      .file-list-item-delete {
+        pointer-events: auto;
+        cursor: no-drop;
+        color: red;
+      }
+    }
+  }
+}

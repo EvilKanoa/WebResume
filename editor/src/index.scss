@@ -14,7 +14,7 @@ body {
 
 #action-bar {
   display: flex;
-  flex-flow: row-reverse;
+  flex-flow: row;
 
   grid-row-start: 1;
   grid-row-end: 2;
@@ -39,6 +39,10 @@ body {
 
     &:hover {
       background: #242654;
+    }
+
+    &.right {
+      margin-left: auto;
     }
   }
 }

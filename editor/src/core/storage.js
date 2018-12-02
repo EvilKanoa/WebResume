@@ -1,6 +1,6 @@
 class Storage {
     constructor(prefix) {
-        this.prefix = prefix + '-';
+        this.prefix = prefix + '-'; // TODO: switch to '_'
         this.engine = localStorage;
     }
 
@@ -33,6 +33,44 @@ class Storage {
             return undefined;
         }
     };
+
+    saveFile = (filename, data) => this.set(
+        'saved_files',
+        [
+            ...(this.get('saved_files') || [])
+                .filter(({ name }) => name !== filename),
+            {
+                name: filename,
+                data,
+                modified: new Date().toISOString()
+            }
+        ]
+    );
+
+    loadFile = (filename) => (this.get('saved_files') || [])
+        .find(({ name }) => name === filename);
+
+    getSavedFiles = () => (this.get('saved_files') || [])
+        .filter(({ deleted }) => !deleted)
+        .map(({ name }) => name);
+
+    deleteFile = (filename) => {
+        const file = this.loadFile(filename);
+        if (file) {
+            this.set(
+                'saved_files',
+                [
+                    ...(this.get('saved_files') || [])
+                        .filter(({ name }) => name !== filename),
+                    {
+                        ...file,
+                        deleted: true,
+                        modified: new Date().toISOString()
+                    }
+                ]
+            )
+        }
+    }
 }
 
 const instance = new Storage('WebResume_v1');

@@ -3,7 +3,15 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getRender, getResumeJSON, renderResume, blipPrintMode} from 'reducer';
+import {
+    getRender,
+    getResumeJSON,
+    renderResume,
+    blipPrintMode,
+    showModal
+} from 'reducer';
+import LoadModal from 'components/action/LoadModal';
+import SaveModal from 'components/action/SaveModal';
 
 const ActionButton = ({
     onClick = () => {},
@@ -26,7 +34,8 @@ const ActionButton = ({
     }),
     (dispatch) => bindActionCreators({
         renderResume,
-        blipPrintMode
+        blipPrintMode,
+        showModal
     }, dispatch)
 )
 class ActionBar extends PureComponent {
@@ -53,10 +62,22 @@ class ActionBar extends PureComponent {
         });
     };
 
+    save = () => {
+        this.props.showModal(SaveModal);
+    };
+
+    load = () => {
+        this.props.showModal(LoadModal);
+    };
+
     render() {
         return (
             <div id="action-bar">
-                <ActionButton label="Print Resume" onClick={this.printResume}/>
+                <ActionButton label="Load" onClick={this.load}/>
+                <ActionButton label="Save" onClick={this.save}/>
+                <ActionButton label="Collaborate"/>
+
+                <ActionButton className="right" label="Print Resume" onClick={this.printResume}/>
                 <ActionButton label="Render Markup" onClick={this.renderMarkup}/>
                 <ActionButton label="Export JSON" onClick={this.downloadJSON}/>
             </div>

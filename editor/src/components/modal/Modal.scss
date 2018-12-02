@@ -1,0 +1,50 @@
+.inner-modal {
+  display: flex;
+  flex-flow: column nowrap;
+  font-family: 'Open Sans Condensed', sans-serif;
+
+  .modal-header {
+    flex: 0 1 1.5rem;
+    border-bottom: 1px solid black;
+    padding: 1rem 0 0.5rem;
+    line-height: 1.5rem;
+
+    .modal-title {
+      font-size: 18pt;
+    }
+  }
+
+  .modal-body {
+    display: block;
+    flex: 1 1 auto;
+    padding: 1rem 0;
+
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .modal-footer {
+    display: flex;
+    flex: 0 1 2rem;
+    line-height: 1rem;
+    flex-flow: row;
+    border-top: 1px solid black;
+    justify-content: flex-end;
+    padding: 1rem 0;
+
+    .modal-button {
+      display: block;
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      border-radius: 1em;
+      box-shadow: 0 0 20px -4px black;
+
+      pointer-events: auto;
+      cursor: pointer;
+      font-size: 14pt;
+
+      &:hover {
+        background: rgba(45, 50, 54, 0.5);
+      }
+    }
+  }
+}
