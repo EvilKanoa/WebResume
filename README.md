@@ -15,19 +15,6 @@ Live version available at [evilkanoa.github.io/WebResume](https://evilkanoa.gith
 		"date": string,
 		"description": string
 	},
-	"style": {
-		"color": {
-			"primary": string,
-			"secondary": string,
-			"accent": string,
-			"background": string
-		},
-		"size": "a4" | "letter" | {
-			"width": string,
-			"height": string
-		},
-		"customCSS": string
-	},
 	"data": {
 		"name": string,
 		"title": string,
