@@ -49,7 +49,7 @@ body {
   grid-column-start: 1;
   grid-column-end: 2;
 
-  margin: 1rem;
+  margin: 1rem 1rem 1rem 2rem;
   box-shadow: 0 0 20px -4px black;
 }
 
@@ -59,7 +59,7 @@ body {
   grid-column-start: 2;
   grid-column-end: 3;
 
-  margin: 1rem !important;
+  margin: 1rem 2rem 1rem 1rem !important;
 }
 
 /* hide everything but resume on print */

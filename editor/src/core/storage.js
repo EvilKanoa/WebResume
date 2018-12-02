@@ -37,4 +37,16 @@ class Storage {
 
 const instance = new Storage('WebResume_v1');
 
-export default instance;
+const getMiddleware = (prop) => (store) => (next) => (action) => {
+    const prev = store.getState()[prop];
+    const result = next(action);
+    const value = store.getState()[prop];
+
+    if (prev !== value) {
+        instance.set(prop, value);
+    }
+
+    return result;
+};
+
+export {getMiddleware, instance as default};
