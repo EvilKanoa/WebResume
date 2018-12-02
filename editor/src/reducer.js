@@ -1,5 +1,6 @@
 import React from 'react';
 import set from 'lodash.set';
+import {createSelector} from 'reselect';
 import {renderToStaticMarkup} from 'react-dom/server'
 
 import Resume from 'components/resume/Resume';
@@ -159,12 +160,18 @@ const initialState = {
             ]
         }
     },
-    render: ''
+    render: '',
+    printMode: false
 };
 
 // selectors
 export const getResumeData = (state) => state.resume;
+export const getResumeJSON = createSelector(
+    [getResumeData],
+    (resume) => JSON.stringify(resume, null, 2)
+);
 export const getRender = (state) => state.render;
+export const getPrintMode = (state) => state.printMode;
 
 // action-creators
 export const setResume = (data) => ({
@@ -189,6 +196,17 @@ export const renderResume = () => async (dispatch, getState) => {
 
     return data;
 };
+export const setPrintMode = (enabled) => ({
+    type: 'SET_PRINT_MODE',
+    data: enabled
+});
+export const blipPrintMode = (delayMs = 100, cb) => (dispatch) => {
+    dispatch(setPrintMode(true));
+    setTimeout(() => {
+        cb();
+        dispatch(setPrintMode(false));
+    }, delayMs);
+};
 
 // reducer
 export default (state = initialState, { type, ...action }) => {
@@ -209,6 +227,11 @@ export default (state = initialState, { type, ...action }) => {
         case 'SET_RENDER_RESULT': return {
             ...state,
             render: action.data
+        };
+
+        case 'SET_PRINT_MODE': return {
+            ...state,
+            printMode: action.data
         };
 
         default: return {

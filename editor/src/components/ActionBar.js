@@ -3,20 +3,34 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getRender, renderResume} from 'reducer';
+import {getRender, getResumeJSON, renderResume, blipPrintMode} from 'reducer';
+
+const ActionButton = ({
+    onClick = () => {},
+    className = '',
+    label = '',
+    ...rest
+}) => (
+    <div className={'button ' + className} onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+    }} {...rest}>
+        { label }
+    </div>
+);
 
 @connect(
     (state) => ({
-        render: getRender(state)
+        render: getRender(state),
+        json: getResumeJSON(state)
     }),
     (dispatch) => bindActionCreators({
-        renderResume
+        renderResume,
+        blipPrintMode
     }, dispatch)
 )
 class ActionBar extends PureComponent {
-    renderMarkup = async (e) => {
-        e.preventDefault();
-
+    renderMarkup = async () => {
         const html = await this.props.renderResume();
         const element = document.createElement('a');
 
@@ -25,12 +39,26 @@ class ActionBar extends PureComponent {
         element.click();
     };
 
+    downloadJSON = () => {
+        const element = document.createElement('a');
+
+        element.href = URL.createObjectURL(new Blob([this.props.json]), { type: 'application/json' });
+        element.download = 'resume.json';
+        element.click();
+    };
+
+    printResume = () => {
+        this.props.blipPrintMode(50, () => {
+            window.print();
+        });
+    };
+
     render() {
         return (
             <div id="action-bar">
-                <div className="button" onClick={this.renderMarkup}>
-                    Render Markup
-                </div>
+                <ActionButton label="Print Resume" onClick={this.printResume}/>
+                <ActionButton label="Render Markup" onClick={this.renderMarkup}/>
+                <ActionButton label="Export JSON" onClick={this.downloadJSON}/>
             </div>
         )
     }
