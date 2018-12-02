@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {hot} from 'react-hot-loader';
 
 import {getPrintMode, getResumeData, setResumeData, getModalElement} from 'reducer';
 import Resume from 'components/resume/Resume';
@@ -8,6 +9,7 @@ import ActionBar from 'components/ActionBar';
 import Editor from 'components/Editor';
 import ModalContainer from 'components/modal/ModalContainer'
 
+@hot(module)
 @connect(
     (state) => ({
         resumeData: getResumeData(state),

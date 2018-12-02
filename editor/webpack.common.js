@@ -3,12 +3,11 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env = {}) => ({
-    entry: {
-        app: './src/index.js'
-    },
+    entry: [
+        './src/index.js'
+    ],
     output: {
         filename: '[name].[hash].bundle.js',
         path: path.resolve(__dirname, 'dist')
@@ -34,7 +33,6 @@ module.exports = (env = {}) => ({
                 test: /\.(sa|sc|c)ss$/,
                 exclude: /node_modules/,
                 use: [
-                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'postcss-loader',
                     'sass-loader'
@@ -55,10 +53,6 @@ module.exports = (env = {}) => ({
             return acc;
         }, {})),
         new CleanWebpackPlugin(['dist']),
-        new MiniCssExtractPlugin({
-            filename: '[name].[hash].css',
-            chunkFilename: '[id].[hash].css'
-        }),
         new HtmlWebpackPlugin({
             title: 'Web Resume',
             filename: 'index.html',
