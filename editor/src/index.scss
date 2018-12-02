@@ -4,3 +4,62 @@ body {
   background: white;
   display: block;
 }
+
+#app {
+  display: grid;
+
+  grid-template-rows: 4rem 1fr;
+  grid-template-columns: 1fr 2fr;
+}
+
+#action-bar {
+  display: flex;
+  flex-flow: row-reverse;
+
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+
+  height: 4rem;
+  background: #2d3236;
+  color: #e0e0de;
+
+  .button {
+    flex: 0 1 auto;
+    line-height: 4rem;
+    padding: 0 1rem;
+
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+
+    font-weight: bold;
+    font-family: sans-serif;
+
+    &:hover {
+      background: #242654;
+    }
+  }
+}
+
+#editor {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.res {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+/* hide everything but resume on print */
+@media only print {
+  #app > *:not(.res) {
+    display: none;
+  }
+}

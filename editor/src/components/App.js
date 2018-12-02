@@ -4,6 +4,8 @@ import {bindActionCreators} from 'redux';
 
 import {getResumeData, setResumeData} from 'reducer';
 import Resume from 'components/resume/Resume';
+import ActionBar from 'components/ActionBar';
+import Editor from 'components/Editor';
 
 @connect(
     (state) => ({
@@ -21,8 +23,13 @@ class App extends Component {
         } = this.props;
 
         return (
-            <div id="app" ref={(div) => this.div = div}>
-                <Resume data={resumeData.data} update={setResumeData}/>
+            <div id="app">
+                <ActionBar/>
+                <Editor/>
+                <Resume
+                    data={resumeData.data}
+                    update={setResumeData}
+                />
             </div>
         );
     }

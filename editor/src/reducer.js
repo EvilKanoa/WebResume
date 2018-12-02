@@ -1,4 +1,8 @@
+import React from 'react';
 import set from 'lodash.set';
+import {renderToStaticMarkup} from 'react-dom/server'
+
+import Resume from 'components/resume/Resume';
 
 const initialState = {
     resume: {
@@ -154,28 +158,57 @@ const initialState = {
                 }
             ]
         }
-    }
+    },
+    render: ''
 };
 
 // selectors
 export const getResumeData = (state) => state.resume;
+export const getRender = (state) => state.render;
 
 // action-creators
+export const setResume = (data) => ({
+    type: 'SET_RESUME',
+    data
+});
 export const setResumeData = (path, data) => ({
     type: 'SET_RESUME_DATA',
     path,
     data
 });
+export const renderResume = () => async (dispatch, getState) => {
+    const input = getResumeData(getState());
+    const data = await renderToStaticMarkup(
+        <Resume data={input.data}/>
+    );
+
+    dispatch({
+        type: 'SET_RENDER_RESULT',
+        data
+    });
+
+    return data;
+};
 
 // reducer
 export default (state = initialState, { type, ...action }) => {
     switch (type) {
+        case 'SET_RESUME': return {
+            ...state,
+            resume: action.data
+        };
+
         case 'SET_RESUME_DATA': return {
             ...state,
             resume: {
                 ...state.resume,
                 data: set({ ...state.resume.data }, action.path, action.data)
             }
+        };
+
+        case 'SET_RENDER_RESULT': return {
+            ...state,
+            render: action.data
         };
 
         default: return {
