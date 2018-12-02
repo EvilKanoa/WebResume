@@ -17,13 +17,14 @@ class FileList extends Component {
                 { filenames.map((filename) => (
                     <span
                         className={'file-list-item-container ' + (selected === filename ? 'selected' : '')}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onChange(filename);
-                        }}
                         key={filename}
                     >
-                        <div className="file-list-item">
+                        <div className="file-list-item"
+                             onClick={(e) => {
+                                 e.preventDefault();
+                                 onChange(filename);
+                             }}
+                        >
                             <span className="file-list-item-name">
                                 Name: { filename }
                             </span>

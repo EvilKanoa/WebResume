@@ -7,8 +7,6 @@
 
     border-bottom: 1px solid black;
     line-height: 2rem;
-    cursor: pointer;
-    pointer-events: auto;
     padding: 0.25em 0;
 
     &:last-child {
@@ -24,6 +22,8 @@
       border-radius: 0.25em;
       padding: 0 1rem;
       user-select: none;
+      cursor: pointer;
+      pointer-events: auto;
 
       &:hover {
         box-shadow: 0 0 20px -4px black;
