@@ -27,6 +27,19 @@ const ActionButton = ({
     </div>
 );
 
+const CollaborateModal = () => (
+    <div style={{
+        width: '400px',
+        height: '100px',
+        fontSize: '18pt',
+        padding: '2rem',
+        lineHeight: '100px',
+        textAlign: 'center'
+    }}>
+        <span>Generating collaboration space...</span>
+    </div>
+);
+
 @connect(
     (state) => ({
         render: getRender(state),
@@ -70,12 +83,21 @@ class ActionBar extends PureComponent {
         this.props.showModal(LoadModal);
     };
 
+    collaborate = async () => {
+        this.props.showModal(CollaborateModal);
+        const res = await fetch('http://localhost:8080/collab', {
+            method: 'post'
+        });
+        const id = await res.json();
+        console.log('Editor ID ', id);
+    };
+
     render() {
         return (
             <div id="action-bar">
                 <ActionButton label="Load" onClick={this.load}/>
                 <ActionButton label="Save" onClick={this.save}/>
-                <ActionButton label="Collaborate"/>
+                <ActionButton label="Collaborate" onClick={this.collaborate}/>
 
                 <ActionButton className="right" label="Print Resume" onClick={this.printResume}/>
                 <ActionButton label="Render Markup" onClick={this.renderMarkup}/>

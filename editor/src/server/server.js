@@ -2,8 +2,12 @@ require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
+const http = require('http');
+const sockets = require('./redux/sockets');
 
 const app = express();
+const server = http.Server(app);
+sockets.use(server);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, '../../dist')));
@@ -20,6 +24,8 @@ if (process.env.NODE_ENV === 'production') {
     app.use(require('webpack-hot-middleware')(compiler));
 }
 
-app.listen(process.env.PORT, () =>
+sockets.routes(app);
+
+server.listen(process.env.PORT, () =>
     console.log(`Listening on port ${process.env.PORT}.`)
 );
