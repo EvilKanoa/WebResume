@@ -18,31 +18,33 @@ const createChannel = (id) => {
 
 const connectHandler = (id) => (socket) => {
     socket.on('action', actionHandler(id, socket));
-    setTimeout(() => {
+    setTimeout(async () => {
         socket.emit('action', {
             type: 'SET_STATE',
-            data: stores.getStore(id).getState()
+            data: (await stores.getStore(id)).getState()
         });
     }, 100);
 };
 
-const actionHandler = (id, socket) => (action) => {
+const actionHandler = (id, socket) => async (action) => {
     if (!action) return;
 
-    stores.getStore(id).dispatch(action);
+    (await stores.getStore(id)).dispatch(action);
     socket.broadcast.emit('action', action);
 };
 
 const routes = (app) => {
-    app.post('/collab', (req, res) => {
-        const id = stores.createStore(req.body);
+    app.post('/collab', async (req, res) => {
+        const id = stores.id();
+        await stores.getStore(id, req.body);
         createChannel(id);
 
         res.json({ id });
     });
 
-    app.post('/collab/:collabId', (req, res) => {
-        const id = stores.createStore(null, req.params.collabId);
+    app.post('/collab/:collabId', async (req, res) => {
+        const id = req.params.collabId;
+        await stores.getStore(id);
         createChannel(id);
 
         res.json({ id });

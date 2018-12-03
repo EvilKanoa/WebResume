@@ -3,35 +3,52 @@ const reducer = require('./serverReducer');
 const uniqid = require('uniqid');
 
 const stores = {};
+let db;
+const cached = () => db.collection('web-resume-cache');
 
-const createStore = (initialState, id) => {
-    if (id && stores[id]) {
-        return id;
-    } else {
-        id = id || uniqid();
-        stores[id] = redux.createStore(
-            reducer,
-            initialState
-        );
-        return id;
-    }
+const use = (mongoClient) => db = mongoClient.db();
+
+const saveStore = async (id, store) => {
+    await cached().updateOne(
+        { key: id },
+        { $set: { value: store.getState() } },
+        { upsert: true }
+    );
 };
 
-const getStore = (id) => {
+const middleware = (id) => (store) => (next) => (action) => {
+    const result = next(action);
+    saveStore(id, store).catch((err) => console.error(err));
+    return result;
+};
+
+const id = uniqid;
+
+const getStore = async (id, initialState) => {
+    // check for cached stores
+    if (id && !stores[id]) {
+        const result = await cached().findOne({ key: id });
+        if (result && result.value) {
+            initialState = result.value;
+        }
+    }
+
+    // create new store
+    if (!stores[id]) {
+        id = id || uniqid();
+
+        stores[id] = redux.createStore(
+            reducer,
+            initialState,
+            redux.applyMiddleware(middleware(id))
+        );
+    }
+
     return stores[id];
 };
 
-const deleteStore = (id) => {
-    delete stores[id];
-};
-
-const listStores = () => {
-    return Object.keys(stores);
-};
-
 module.exports = {
-    createStore,
-    getStore,
-    deleteStore,
-    listStores
+    use,
+    id,
+    getStore
 };

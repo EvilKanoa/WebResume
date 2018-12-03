@@ -3,11 +3,30 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const http = require('http');
+const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const sockets = require('./redux/sockets');
+const manager = require('./redux/manager');
 
 const app = express();
 const server = http.Server(app);
+
+// connect to mongo
+MongoClient.connect(
+    process.env.MONGODB_URI,
+    { useNewUrlParser: true },
+    (err, mongo) => {
+        if (err) {
+            console.error(`Unable to connect to MongoDB: ${process.env.MONGODB_URI}`);
+            console.warn('Running in cache only mode.');
+            return;
+        }
+
+        console.log(`Connected to mongo.`);
+        manager.use(mongo);
+    }
+);
+
 sockets.use(server);
 app.use(bodyParser.json());
 
