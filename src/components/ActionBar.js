@@ -87,7 +87,7 @@ class ActionBar extends PureComponent {
 
     collaborate = async () => {
         this.props.showModal(CollaborateModal);
-        const res = await fetch('http://localhost:8080/collab', {
+        const res = await fetch(window.location.href + 'collab', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: `{"resume":${this.props.json}}`
