@@ -2,9 +2,10 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 
 import {getMiddleware} from 'core/storage';
+import {middleware as socketMiddleware} from 'core/sockets';
 import reducer from 'reducer';
 
-let middleware = applyMiddleware(thunk, getMiddleware('resume'));
+let middleware = applyMiddleware(thunk, getMiddleware('resume'), socketMiddleware);
 if (window.__REDUX_DEVTOOLS_EXTENSION__) {
     middleware = compose(middleware, window.__REDUX_DEVTOOLS_EXTENSION__());
 }

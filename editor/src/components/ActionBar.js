@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import {
     getRender,
     getResumeJSON,
+    getCollabId,
     renderResume,
     blipPrintMode,
     showModal
@@ -43,7 +44,8 @@ const CollaborateModal = () => (
 @connect(
     (state) => ({
         render: getRender(state),
-        json: getResumeJSON(state)
+        json: getResumeJSON(state),
+        collabId: getCollabId(state)
     }),
     (dispatch) => bindActionCreators({
         renderResume,
@@ -86,10 +88,12 @@ class ActionBar extends PureComponent {
     collaborate = async () => {
         this.props.showModal(CollaborateModal);
         const res = await fetch('http://localhost:8080/collab', {
-            method: 'post'
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: `{"resume":${this.props.json}}`
         });
-        const id = await res.json();
-        console.log('Editor ID ', id);
+        const { id } = await res.json();
+        window.location.href += `collab/${id}/`;
     };
 
     render() {
@@ -97,7 +101,12 @@ class ActionBar extends PureComponent {
             <div id="action-bar">
                 <ActionButton label="Load" onClick={this.load}/>
                 <ActionButton label="Save" onClick={this.save}/>
-                <ActionButton label="Collaborate" onClick={this.collaborate}/>
+                { this.props.collabId ?
+                    <span className="collab-indicator">
+                        Collaborating: { this.props.collabId }
+                    </span> :
+                    <ActionButton label="Collaborate" onClick={this.collaborate}/>
+                }
 
                 <ActionButton className="right" label="Print Resume" onClick={this.printResume}/>
                 <ActionButton label="Render Markup" onClick={this.renderMarkup}/>

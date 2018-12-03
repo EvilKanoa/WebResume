@@ -45,6 +45,15 @@ body {
       margin-left: auto;
     }
   }
+
+  .collab-indicator {
+    flex: 0 1 auto;
+    line-height: 4rem;
+    padding: 0 1rem;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: green;
+  }
 }
 
 #editor {

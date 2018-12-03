@@ -32,7 +32,7 @@ const actionHandler = (id, socket) => (action) => {
 
 const routes = (app) => {
     app.post('/collab', (req, res) => {
-        const id = stores.createStore(req.params.state);
+        const id = stores.createStore(req.body);
         createChannel(id);
 
         res.json({ id });
