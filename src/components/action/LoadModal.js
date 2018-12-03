@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 
 import storage from 'core/storage';
 import {hideModal, setResume} from 'reducer';
+import Messages from 'components/Messages';
 import Modal from 'components/modal/Modal';
 import FileList from 'components/action/FileList';
 
@@ -33,6 +34,7 @@ class LoadModal extends PureComponent {
         if (file) {
             this.props.setResume(file.data);
             this.props.hideModal();
+            Messages.success(`Loaded file: ${this.state.selected}`);
         }
     };
 

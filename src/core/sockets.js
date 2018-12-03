@@ -1,32 +1,57 @@
 import io from 'socket.io-client';
 
-import store from 'core/store';
-import {setCollabId, getCollabId} from 'reducer';
+let socket;
+let collabId;
 
-const actionListener = (action) => {
+const currentCollabId = () => collabId;
+
+const getActionListener = (store) => (action) => {
     if (action) store.dispatch(action);
 };
 
-const setup = () => {
-    const href = window.location.href.toString();
-    const collab = href.indexOf('collab');
-    if (collab > 0) {
-        const id = href.substring(collab + 7).replace(/\/.*/i, '');
-        store.dispatch(setCollabId(id));
+const setup = async (newId, store) => {
+    kill();
+    if (newId) {
+        const res = await fetch(
+            `${window.location.protocol}//${window.location.host}/collab/${newId}`,
+            {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'}
+            }
+        );
 
-        window.collabSocket = io(`/${id}`);
-        window.collabSocket.on('action', actionListener);
+        const data = await res.json();
+        if (!data || data.id !== newId) {
+            throw Error('Server rejected collaboration ID: ' + newId);
+        }
+
+        collabId = data.id;
+        socket = io(`/${collabId}`);
+        window.collabSocket = socket;
+        socket.on('action', getActionListener(store));
     }
 };
 
-const middleware = (store) => (next) => (action) => {
-    if (action.collab === true && getCollabId(store.getState())) {
-        window.collabSocket.emit('action', {
+const kill = () => {
+    if (socket) {
+        socket.disconnect();
+        socket = undefined;
+        window.collabSocket = undefined;
+    }
+
+    if (collabId) {
+        collabId = undefined;
+    }
+};
+
+const middleware = () => (next) => (action) => {
+    if (socket && action.remote === true) {
+        socket.emit('action', {
             ...action,
-            collab: false
+            remote: false
         });
     }
     return next(action);
 };
 
-export { setup as default, middleware };
+export { setup, middleware, kill, currentCollabId };

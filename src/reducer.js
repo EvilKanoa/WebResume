@@ -11,8 +11,7 @@ const initialState = {
     resume: JSON.parse(defaultResume),
     render: '',
     printMode: false,
-    modal: undefined,
-    collabId: undefined
+    modal: undefined
 };
 
 // selectors
@@ -24,17 +23,16 @@ export const getResumeJSON = createSelector(
 export const getRender = (state) => state.render;
 export const getPrintMode = (state) => state.printMode;
 export const getModalElement = (state) => state.modal;
-export const getCollabId = (state) => state.collabId;
 
 // action-creators
 export const setResume = (data) => ({
     type: 'SET_RESUME',
-    collab: true,
+    remote: true,
     data
 });
 export const setResumeData = (path, data) => ({
     type: 'SET_RESUME_DATA',
-    collab: true,
+    remote: true,
     path,
     data
 });
@@ -68,10 +66,6 @@ export const showModal = (modalElement) => ({
 });
 export const hideModal = () => ({
     type: 'HIDE_MODAL'
-});
-export const setCollabId = (collabId) => ({
-    type: 'SET_COLLAB_ID',
-    data: collabId
 });
 
 // reducer
@@ -113,11 +107,6 @@ export default (state = initialState, { type, ...action }) => {
         case 'HIDE_MODAL': return {
             ...state,
             modal: undefined
-        };
-
-        case 'SET_COLLAB_ID': return {
-            ...state,
-            collabId: action.data
         };
 
         default: return {

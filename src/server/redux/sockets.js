@@ -2,15 +2,18 @@ const socketio = require('socket.io');
 const stores = require('./manager');
 
 let io;
+let channels = {};
 
 const use = (server) => {
     io = socketio(server);
 };
 
 const createChannel = (id) => {
-    const channel = io.of(`/${id}`);
-    channel.on('connection', connectHandler(id));
-    return channel;
+    if (!channels[id]) {
+        channels[id] = io.of(`/${id}`);
+        channels[id].on('connection', connectHandler(id));
+    }
+    return channels[id]
 };
 
 const connectHandler = (id) => (socket) => {
@@ -33,6 +36,13 @@ const actionHandler = (id, socket) => (action) => {
 const routes = (app) => {
     app.post('/collab', (req, res) => {
         const id = stores.createStore(req.body);
+        createChannel(id);
+
+        res.json({ id });
+    });
+
+    app.post('/collab/:collabId', (req, res) => {
+        const id = stores.createStore(null, req.params.collabId);
         createChannel(id);
 
         res.json({ id });

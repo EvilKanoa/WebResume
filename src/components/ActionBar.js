@@ -2,15 +2,16 @@ import React, {PureComponent} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {withRouter} from 'react-router-dom';
 
 import {
     getRender,
     getResumeJSON,
-    getCollabId,
     renderResume,
     blipPrintMode,
     showModal
 } from 'reducer';
+import Messages from 'components/Messages';
 import LoadModal from 'components/action/LoadModal';
 import SaveModal from 'components/action/SaveModal';
 
@@ -28,24 +29,11 @@ const ActionButton = ({
     </div>
 );
 
-const CollaborateModal = () => (
-    <div style={{
-        width: '400px',
-        height: '100px',
-        fontSize: '18pt',
-        padding: '2rem',
-        lineHeight: '100px',
-        textAlign: 'center'
-    }}>
-        <span>Generating collaboration space...</span>
-    </div>
-);
-
+@withRouter
 @connect(
     (state) => ({
         render: getRender(state),
-        json: getResumeJSON(state),
-        collabId: getCollabId(state)
+        json: getResumeJSON(state)
     }),
     (dispatch) => bindActionCreators({
         renderResume,
@@ -61,6 +49,7 @@ class ActionBar extends PureComponent {
         element.href = URL.createObjectURL(new Blob([html]), { type: 'text/plain' });
         element.download = 'resume.html';
         element.click();
+        Messages.info('Downloading markup...');
     };
 
     downloadJSON = () => {
@@ -69,6 +58,7 @@ class ActionBar extends PureComponent {
         element.href = URL.createObjectURL(new Blob([this.props.json]), { type: 'application/json' });
         element.download = 'resume.json';
         element.click();
+        Messages.info('Downloading JSON...');
     };
 
     printResume = () => {
@@ -86,14 +76,31 @@ class ActionBar extends PureComponent {
     };
 
     collaborate = async () => {
-        this.props.showModal(CollaborateModal);
-        const res = await fetch(window.location.href + 'collab', {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: `{"resume":${this.props.json}}`
-        });
+        Messages.info('Generating collaboration space...');
+        const res = await fetch(
+            `${window.location.protocol}//${window.location.host}/collab`,
+            {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: `{"resume":${this.props.json}}`
+            }
+        );
         const { id } = await res.json();
-        window.location.href += `collab/${id}/`;
+        this.props.history.push('/' + id);
+    };
+
+    collabIndicatorOnClick = (e) => {
+        e.preventDefault();
+        if (this.linkNode) {
+            window.getSelection().selectAllChildren(this.linkNode);
+            document.execCommand('copy');
+            Messages.success('Copied to clipboard.');
+        }
+    };
+
+    leaveCollaboration = () => {
+        this.props.history.push('/');
+        Messages.info('Disconnected from collaboration space.');
     };
 
     render() {
@@ -101,10 +108,21 @@ class ActionBar extends PureComponent {
             <div id="action-bar">
                 <ActionButton label="Load" onClick={this.load}/>
                 <ActionButton label="Save" onClick={this.save}/>
-                { this.props.collabId ?
+                { this.props.collabId &&
+                    <ActionButton label="Leave Collaboration" onClick={this.leaveCollaboration}/>
+                }
+                { this.props.collabId &&
                     <span className="collab-indicator">
-                        Collaborating: { this.props.collabId }
-                    </span> :
+                        Collaborating: <a
+                            onClick={this.collabIndicatorOnClick}
+                            href={window.location.href}
+                            ref={(a) => this.linkNode = a}
+                        >
+                            { `${window.location.host}/${window.location.hash}` }
+                        </a>
+                    </span>
+                }
+                { !this.props.collabId &&
                     <ActionButton label="Collaborate" onClick={this.collaborate}/>
                 }
 

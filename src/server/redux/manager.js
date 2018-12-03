@@ -4,13 +4,17 @@ const uniqid = require('uniqid');
 
 const stores = {};
 
-const createStore = (initialState) => {
-    const id = uniqid();
-    stores[id] = redux.createStore(
-        reducer,
-        initialState
-    );
-    return id;
+const createStore = (initialState, id) => {
+    if (id && stores[id]) {
+        return id;
+    } else {
+        id = id || uniqid();
+        stores[id] = redux.createStore(
+            reducer,
+            initialState
+        );
+        return id;
+    }
 };
 
 const getStore = (id) => {

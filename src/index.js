@@ -1,21 +1,25 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {render} from 'react-dom';
+import {HashRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
 
-import App from 'components/App';
+import {WrappedApp, App} from 'components/CollaborationWrapper';
 import store from 'core/store';
-import setupCollaboration from 'core/sockets';
 
 import 'index.scss';
 
 window.getState = store.getState;
 window.getStore = () => store;
 
-setupCollaboration();
-
 render(
     <Provider store={store}>
-        <App/>
+        <Router>
+            <Switch>
+                <Route path="/" exact component={App}/>
+                <Route path="/:collabId" component={WrappedApp}/>
+                <Redirect to="/"/>
+            </Switch>
+        </Router>
     </Provider>,
     document.getElementById('root')
 );

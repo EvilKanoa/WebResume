@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 
 import storage from 'core/storage';
 import {getResumeData, hideModal} from 'reducer';
+import Messages from 'components/Messages';
 import Modal from 'components/modal/Modal';
 import FileList from 'components/action/FileList';
 
@@ -35,6 +36,7 @@ class SaveModal extends PureComponent {
 
         storage.saveFile(this.state.filename, this.props.data);
         this.props.hideModal();
+        Messages.success(`Saved file: ${this.state.filename}`);
     };
 
     render() {

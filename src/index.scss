@@ -53,6 +53,12 @@ body {
     font-weight: bold;
     font-family: sans-serif;
     color: green;
+    margin-left: auto;
+
+    > a {
+      color: inherit;
+      font: inherit;
+    }
   }
 }
 

@@ -1,0 +1,64 @@
+#message-container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  bottom: 1rem;
+  right: 1rem;
+
+  background: none;
+  z-index: 999;
+  pointer-events: none;
+
+  .message {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    flex: 0 1 auto;
+    width: auto;
+    margin-bottom: 1em;
+    padding: 1rem;
+    z-index: 1000;
+    pointer-events: auto;
+    user-select: none;
+
+    background: white;
+    border-radius: 1em;
+    box-shadow: 0 0 20px -4px black;
+    font-family: 'Open Sans', sans-serif;
+
+    .icon {
+      padding-right: 0.5em;
+    }
+
+    &.error {
+      .icon {
+        color: red;
+      }
+    }
+
+    &.warn {
+      .icon {
+        color: #909000;
+      }
+    }
+
+    &.info {
+      .icon {
+        color: black;
+      }
+    }
+
+    &.success {
+      .icon {
+        color: green;
+      }
+    }
+  }
+}

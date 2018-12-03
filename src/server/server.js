@@ -11,12 +11,7 @@ const server = http.Server(app);
 sockets.use(server);
 app.use(bodyParser.json());
 
-// serve regular client for collab
-app.get('/collab/:collabId/*', (req, res, next) => {
-    req.url = req.url.replace(/\/collab\/[a-zA-Z0-9]*\/?/, '/');
-    next('route');
-});
-
+// serve react SPA
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../../dist')));
 } else {
@@ -33,6 +28,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 sockets.routes(app);
+
+// redirect 404 to index
+app.use((req, res) => {
+    res.redirect(301, '/');
+});
 
 server.listen(process.env.PORT, () =>
     console.log(`Listening on port ${process.env.PORT}.`)

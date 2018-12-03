@@ -8,6 +8,7 @@ import Resume from 'components/resume/Resume';
 import ActionBar from 'components/ActionBar';
 import Editor from 'components/Editor';
 import ModalContainer from 'components/modal/ModalContainer'
+import {MessageContainer} from 'components/Messages';
 
 @hot(module)
 @connect(
@@ -26,7 +27,8 @@ class App extends Component {
             resumeData,
             setResumeData,
             printMode,
-            modalMode
+            modalMode,
+            collabId
         } = this.props;
 
         let className = '';
@@ -35,13 +37,14 @@ class App extends Component {
 
         return (
             <div id="app" className={className}>
-                <ActionBar/>
+                <ActionBar collabId={collabId}/>
                 <Editor/>
                 <Resume
                     data={resumeData.data}
                     update={setResumeData}
                 />
                 <ModalContainer/>
+                <MessageContainer/>
             </div>
         );
     }
