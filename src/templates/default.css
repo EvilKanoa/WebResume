@@ -199,7 +199,7 @@
 .res .res-pane-events .res-content {
     display: grid;
     grid-template-columns: 11mm 1fr;
-    padding-bottom: 5mm; }
+    padding-bottom: 3mm; }
 
 .res .res-pane-events .res-content:last-child {
     padding-bottom: 0;
@@ -253,7 +253,7 @@
     grid-column-start: 2;
     grid-column-end: 3;
 
-    margin: 1.5mm 0 1.5mm 2mm;
+    margin: 1.5mm 0 0 2mm;
     text-align: justify;
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
