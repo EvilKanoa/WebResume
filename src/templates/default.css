@@ -192,7 +192,7 @@
     grid-row-start: 2;
     grid-row-end: 3;
 
-    padding: 5mm;
+    padding: 5mm 5mm 0;
     color: var(--color-primary);
     background: #fefefe; }
 
@@ -200,6 +200,10 @@
     display: grid;
     grid-template-columns: 11mm 1fr;
     padding-bottom: 5mm; }
+
+.res .res-pane-events .res-content:last-child {
+    padding-bottom: 0;
+}
 
 .res .res-pane-events .res-content .res-content-icon {
     grid-column-start: 1;
@@ -249,8 +253,6 @@
     grid-column-start: 2;
     grid-column-end: 3;
 
-    margin-top: 1.5mm;
-    margin-left: 2mm;
     margin: 1.5mm 0 1.5mm 2mm;
     text-align: justify;
     -webkit-hyphens: auto;
