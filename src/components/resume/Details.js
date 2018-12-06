@@ -4,7 +4,7 @@ import OptionalHTML from "./OptionalHTML";
 const SummaryItem = ({ label = '', summary = '' }) => (
     <section className="res-profile res-flag-justify">
         <span className="res-detail-title">
-            { label }
+            <OptionalHTML value={label}/>
         </span>
         <OptionalHTML value={summary}/>
     </section>
@@ -16,7 +16,7 @@ const SkillsItem = ({ skillsets = []}) => (
             ({ label = '', skills = ''}, idx) => (
                 <div className="res-skill-list" key={label + idx}>
                     <span className="res-skill-list-title">
-                        { label }
+                        <OptionalHTML value={label}/>
                     </span>
                     <span className="res-skill-list-items">
                         <OptionalHTML value={skills}/>
@@ -36,7 +36,7 @@ const DetailsItem = ({ label = '', items = []}) => (
             ({ title = '', description = '' }, idx) => (
                 <div className="res-interest-detail" key={title + idx}>
                     <span className="res-interest-detail-title">
-                        { title }
+                        <OptionalHTML value={title}/>
                     </span>
                     <span className="res-interest-detail-description">
                         <OptionalHTML value={description}/>

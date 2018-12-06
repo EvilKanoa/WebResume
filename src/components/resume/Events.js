@@ -10,7 +10,7 @@ const Events = ({ events = [], update }) => (
                 <section className="res-content" key={label + idx}>
                     <i className={'res-content-icon ' + icon}></i>
                     <div className="res-content-header">
-                        { label }
+                        <OptionalHTML value={label}/>
                     </div>
 
                     { flatten(items
@@ -19,13 +19,13 @@ const Events = ({ events = [], update }) => (
                                 <div className="res-content-item" key={title + subtitle + idx}>
                                     <div className="res-content-item-header">
                                         <span className="res-content-item-header-position">
-                                            { title }
+                                            <OptionalHTML value={title}/>
                                         </span>
                                         <span className="res-content-item-header-location">
-                                            { subtitle }
+                                            <OptionalHTML value={subtitle}/>
                                         </span>
                                         <span className="res-content-item-header-date">
-                                            { date }
+                                            <OptionalHTML value={date}/>
                                         </span>
                                     </div>
                                     <OptionalHTML value={description}/>
