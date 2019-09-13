@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {hot} from 'react-hot-loader';
 
-import {getPrintMode, getResumeData, setResumeData, getModalElement} from 'reducer';
+import {getPrintMode, getResumeData, getModalElement} from 'reducer';
 import Resume from 'components/resume/Resume';
 import ActionBar from 'components/ActionBar';
 import Editor from 'components/Editor';
@@ -16,16 +15,12 @@ import {MessageContainer} from 'components/Messages';
         resumeData: getResumeData(state),
         printMode: getPrintMode(state),
         modalMode: !!getModalElement(state)
-    }),
-    (dispatch) => bindActionCreators({
-        setResumeData
-    }, dispatch)
+    })
 )
 class App extends Component {
     render() {
         const {
             resumeData,
-            setResumeData,
             printMode,
             modalMode,
             collabId
@@ -41,7 +36,7 @@ class App extends Component {
                 <Editor/>
                 <Resume
                     data={resumeData.data}
-                    update={setResumeData}
+                    type={resumeData.type || 'res'}
                 />
                 <ModalContainer/>
                 <MessageContainer/>

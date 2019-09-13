@@ -72,7 +72,7 @@ body {
   box-shadow: 0 0 20px -4px black;
 }
 
-.res {
+.res, .ltr {
   grid-row-start: 2;
   grid-row-end: 3;
   grid-column-start: 2;
@@ -83,11 +83,11 @@ body {
 
 /* hide everything but resume on print */
 @media only print {
-  #app > *:not(.res) {
+  #app > *:not(.res):not(.ltr) {
     display: none;
   }
 
-  .res {
+  .res, .ltr {
     grid-row-start: 1;
     grid-row-end: 3;
     grid-column-start: 1;
@@ -98,11 +98,11 @@ body {
 }
 
 #app.print {
-  > *:not(.res) {
+  > *:not(.res):not(.ltr) {
     display: none;
   }
 
-  .res {
+  .res, .ltr {
     grid-row-start: 1;
     grid-row-end: 3;
     grid-column-start: 1;

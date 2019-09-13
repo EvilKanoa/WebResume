@@ -36,6 +36,7 @@ For a production ready build and server:
 ## Resume data format
 ```
 {
+	"type": "res" | "ltr" (defaults to res),
 	"meta": {
 		"author": string,
 		"date": string,
