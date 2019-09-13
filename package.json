@@ -11,7 +11,7 @@
     "start": "npm run dev"
   },
   "engines": {
-    "node": ">=8",
+    "node": "8.x",
     "npm": ">=4"
   },
   "author": "Kanoa Haley",
